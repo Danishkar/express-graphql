@@ -1,12 +1,12 @@
 import express from "express";
 import { SERVER_PORT } from "./config/envConfig.js";
 import connectDb from "./config/dbConfig.js";
+import { createHandler } from "graphql-http/lib/use/express";
+import schema from "./gql-schema/index.js";
 const app = express();
 
-// declare a route with a response
-app.get("/", (req, res) => {
-  res.send("What's up doc ?!");
-});
+// GraphQL Endpoint
+app.all("/graphql", createHandler({ schema }));
 
 // Global Error Handling
 app.use((err, req, res, next) => {
