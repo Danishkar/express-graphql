@@ -1,12 +1,20 @@
-const express = require("express");
-
+import express from "express";
+import { SERVER_PORT } from "./config/envConfig.js";
+import connectDb from "./config/dbConfig.js";
 const app = express();
-const PORT = 3000;
 
-app.listen(PORT, (error) => {
-  if (!error)
-    console.log(
-      "Server is Successfully Running, and App is listening on port " + PORT
-    );
-  else console.log("Error occurred, server can't start", error);
+// declare a route with a response
+app.get("/", (req, res) => {
+  res.send("What's up doc ?!");
+});
+
+// Global Error Handling
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send("Uh oh! An unexpected error occured.");
+});
+
+app.listen(SERVER_PORT, async () => {
+  connectDb();
+  console.log(`Server listening on port ${SERVER_PORT}`);
 });
